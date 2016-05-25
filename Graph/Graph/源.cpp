@@ -25,8 +25,9 @@ void CreateUndirectedGraph(AdjacencyMatrix &G)
 	cout << "请输入顶点信息" << endl;
 	for (i = 0; i < G.vexnum; ++i)
 		cin >> G.vexs[i];
-	for (i = 0; i < G.vexnum; ++i)
-		for (j = 0; j < G.vexnum; ++j)
+	//初始化邻接矩阵
+	for (i = 1; i <= G.vexnum; ++i)
+		for (j = 1; j <= G.vexnum; ++j)
 			G.arcs[i][j] = MaxInt;
 	for (k = 0; k < G.arcnum; ++k)
 	{
@@ -48,21 +49,39 @@ void DepthFirstSearch(AdjacencyMatrix G, int v)
 	int w;
 	cout << v;
 	visited[v] = true;
-	for (w = 0; w < G.vexnum; w++)
+	for (w = 1; w <= G.vexnum; w++)
 	{
 		if ((G.arcs[v][w] != 0) && (!visited[w]))
 			DepthFirstSearch(G, w);
 	}
 }
 
+int FirstAdj(AdjacencyMatrix G, int v)
+{
+	int w;
+	for (w = 1; w <= G.vexnum; w++)
+	{
+		if (G.arcs[v][w] != 0)
+			return w;
+	}
+}
+
+int NextAdj(AdjacencyMatrix G, int v, int r)
+{
+
+}
+
 int main()
 {
 	AdjacencyMatrix * G = new AdjacencyMatrix;
 	CreateUndirectedGraph(*G);
-	int v;
+	int v, r;
 	cout << "请问想从哪个顶点进行遍历" << endl;
 	cin >> v;
 	DepthFirstSearch(*G, v);
-
+	r =FirstAdj(*G, v);
+	cout << r << endl;
+	NextAdj(*G, v, r);
+	
 	system("pause");
 }
