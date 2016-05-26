@@ -4,6 +4,7 @@ using namespace std;
 #define MVNum 100
 #define MaxInt 0
 #define Int 1
+bool visited[MVNum];
 
 /*int VerTexType;
 int ArcType;*/
@@ -40,10 +41,8 @@ void CreateUndirectedGraph(AdjacencyMatrix &G)
 		G.arcs[i][j] = Int;
 		G.arcs[j][i] = G.arcs[i][j];
 	}
-	return;
 }
 
-bool visited[MVNum] = { false };
 void DepthFirstSearch(AdjacencyMatrix G, int v)
 {
 	int w;
@@ -56,32 +55,61 @@ void DepthFirstSearch(AdjacencyMatrix G, int v)
 	}
 }
 
+void InitVisited()
+{
+	for (int i = 0; i < MVNum; i++)
+		visited[i] = false;
+}
+
 int FirstAdj(AdjacencyMatrix G, int v)
 {
 	int w;
 	for (w = 1; w <= G.vexnum; w++)
 	{
-		if (G.arcs[v][w] != 0)
+		if ((G.arcs[v][w] != 0) && (!visited[w]))
+		{
+			visited[w] = true;
 			return w;
+		}
 	}
+	return -1;
 }
 
-int NextAdj(AdjacencyMatrix G, int v, int r)
+int NextAdj(AdjacencyMatrix G, int v, int w)
 {
-
+	int r;
+	for (r = w; r <= G.vexnum; r++)
+	{
+		if ((G.arcs[v][r] != 0) && (!visited[r]))
+		{
+			visited[w] = true;
+			return r;
+		}
+	}
+	return -1;
 }
 
 int main()
 {
 	AdjacencyMatrix * G = new AdjacencyMatrix;
 	CreateUndirectedGraph(*G);
-	int v, r;
-	cout << "请问想从哪个顶点进行遍历" << endl;
-	cin >> v;
-	DepthFirstSearch(*G, v);
-	r =FirstAdj(*G, v);
-	cout << r << endl;
-	NextAdj(*G, v, r);
-	
+	int v, w, c;
+
+	for (c = 0; c <= 1; c++)
+	{
+		InitVisited();
+		cout << "请问想从哪个顶点进行遍历" << endl;
+		cin >> v;
+		cout << "遍历结果为：" ;
+		DepthFirstSearch(*G, v);
+		InitVisited();
+		w = FirstAdj(*G, v);
+		cout << endl;
+		cout << v << "的第一个邻接顶点为：";
+		cout << w << endl;
+		cout << "除了" << w << "，下一个邻接顶点为：";
+		cout << NextAdj(*G, v, w);
+		cout << endl;
+	}
 	system("pause");
 }
