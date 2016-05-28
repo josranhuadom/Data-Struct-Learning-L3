@@ -94,7 +94,6 @@ int main()
 	AdjacencyMatrix * G = new AdjacencyMatrix;
 	CreateUndirectedGraph(*G);
 	int v, w, c;
-
 	for (c = 0; c <= 1; c++)
 	{
 		InitVisited();
